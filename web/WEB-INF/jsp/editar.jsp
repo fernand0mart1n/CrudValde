@@ -3,7 +3,8 @@
     <body>
         <div class="col-xs-offset-3 col-xs-6">
             <legend>Ver cliente</legend>
-            <form class="form form-horizontal" method="POST" action="/CrudValdeJava/nuevo">
+            <form class="form form-horizontal" method="POST" action="/CrudValde/editar">
+                <input type="hidden" name="id" id="id" value="${cliente_id}">
                 <div class="form-group">
                     <label class="col-xs-4 control-label" for="nombre"><b>Nombre:</b></label>
                     <div class="col-xs-8">
@@ -19,7 +20,7 @@
                 <div class="form-group">
                     <label class="col-xs-4 control-label" for="fecha_nac"><b>Fecha de nacimiento:</b></label>
                     <div class="col-xs-8">
-                        <input type="date" value="${cliente.fecha_nac}" id="fecha_nac" name="fecha_nac" class="form-control">
+                        <input type="date" value="${cliente.fechaNac}" id="fecha_nac" name="fecha_nac" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">
@@ -41,12 +42,12 @@
                     <label class="col-xs-4 control-label" for="activo"><b>Activo:</b></label>
                     <div class="col-xs-8">
                         <c:if test="${cliente.activo}">
-                            <input type="radio" id="activo" name="activo" value="${cliente.activo}" checked> Si<br>
-                            <input type="radio" id="activo" name="activo" value="${cliente.activo}"> No<br>
+                            <input type="radio" id="true" name="activo" value="true" checked> Si<br>
+                            <input type="radio" id="false" name="activo" value="false"> No<br>
                         </c:if>
                         <c:if test="${!cliente.activo}">
-                            <input type="radio" id="activo" name="activo" value="${cliente.activo}"> Si<br>
-                            <input type="radio" id="activo" name="activo" value="${cliente.activo}" checked> No<br>
+                            <input type="radio" id="true" name="activo" value="true"> Si<br>
+                            <input type="radio" id="false" name="activo" value="false" checked> No<br>
                         </c:if>
                     </div>
                 </div>

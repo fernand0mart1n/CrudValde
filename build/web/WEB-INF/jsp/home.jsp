@@ -2,7 +2,7 @@
 <jsp:include page="layout.jsp"></jsp:include>
     <body>
         <div class="row">
-            <div class="col-xs-offset-3 col-xs-6 ">
+            <div class="col-xs-offset-2 col-xs-8 ">
                 <table class="table table-responsive table-striped table-hover table-condensed">
                     <thead>
                         <h3>Clientes</h3>
@@ -19,6 +19,12 @@
                                 Edad
                             </th>
                             <th>
+                                Nacionalidad
+                            </th>
+                            <th>
+                                Activo
+                            </th>
+                            <th>
                                 Acciones
                             </th>
                         </tr>
@@ -32,6 +38,17 @@
                                 </td>
                                 <td>
                                     ${cliente.fecha_nac}
+                                </td>
+                                <td>
+                                    ${cliente.nacionalidad.nacionalidad}
+                                </td>
+                                <td>
+                                    <c:if test="${cliente.activo == 1}">
+                                        Si
+                                    </c:if>
+                                    <c:if test="${cliente.activo == 0}">
+                                        No
+                                    </c:if>
                                 </td>
                                 <td>
                                     <div class="btn-group">

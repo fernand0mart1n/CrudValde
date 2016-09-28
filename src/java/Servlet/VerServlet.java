@@ -58,7 +58,7 @@ public class VerServlet extends HttpServlet {
                 cliente.setNombre(rs.getString("nombre"));
                 cliente.setActivo(rs.getBoolean("activo"));
                 cliente.setApellido(rs.getString("apellido"));
-                cliente.setFecha_nac(rs.getDate("fecha_nac"));
+                cliente.setFechaNac(rs.getDate("fecha_nac"));
                 cliente.setNacionalidad(new Nacionalidad(rs.getInt("nacionalidad_id"), conn));
                 
                 request.setAttribute("cliente", cliente);

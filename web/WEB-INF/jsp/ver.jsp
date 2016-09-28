@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <label class="col-xs-4 control-label" for="fecha_nac"><b>Fecha de nacimiento:</b></label>
                     <div class="col-xs-8">
-                        <input type="date" value="${cliente.fecha_nac}" id="fecha_nac" name="fecha_nac" class="form-control" disabled>
+                        <input type="date" value="${cliente.fechaNac}" id="fecha_nac" name="fecha_nac" class="form-control" disabled>
                     </div>
                 </div>
                 <div class="form-group">

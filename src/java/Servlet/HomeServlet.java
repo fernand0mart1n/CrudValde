@@ -48,6 +48,7 @@ public class HomeServlet extends HttpServlet {
                     row.put("nombre", rs.getString("nombre"));
                     row.put("apellido", rs.getString("apellido"));
                     row.put("fecha_nac", rs.getDate("fecha_nac"));
+                    row.put("nacionalidad", new Nacionalidad(rs.getInt("nacionalidad_id"), conn));
                     row.put("activo", rs.getInt("activo"));
                     resultado.add(row);
                 }

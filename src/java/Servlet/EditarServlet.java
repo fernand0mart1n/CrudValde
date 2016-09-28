@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,18 +41,19 @@ public class EditarServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         try {
         
             response.setContentType("text/html;charset=UTF-8");
             
-            Integer id = Integer.valueOf(request.getParameter("id"));
+            Integer clienteId = Integer.parseInt(request.getParameter("id"));
             
             Connection conn = ValdeUtils.Conexion.getConnection();
             
             String sql;
             sql = "SELECT * FROM clientes.clientes WHERE id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, id);
+            pstmt.setInt(1, clienteId);
             ResultSet rs = pstmt.executeQuery();        
 
             if (rs.next()) {
@@ -59,7 +62,7 @@ public class EditarServlet extends HttpServlet {
                 cliente.setNombre(rs.getString("nombre"));
                 cliente.setActivo(rs.getBoolean("activo"));
                 cliente.setApellido(rs.getString("apellido"));
-                cliente.setFecha_nac(rs.getDate("fecha_nac"));
+                cliente.setFechaNac(rs.getDate("fecha_nac"));
                 cliente.setNacionalidad(new Nacionalidad(rs.getInt("nacionalidad_id"), conn));
                 
                 request.setAttribute("cliente", cliente);
@@ -69,6 +72,7 @@ public class EditarServlet extends HttpServlet {
             
             List<Nacionalidad> nacionalidades = Nacionalidad.all(conn);
             
+            request.setAttribute("cliente_id", clienteId);
             request.setAttribute("nacionalidades", nacionalidades);
             
             pstmt.close();
@@ -84,7 +88,46 @@ public class EditarServlet extends HttpServlet {
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         
+        try {
+            
+            response.setContentType("text/html;charset=UTF-8");
+            
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            
+            Connection conn = ValdeUtils.Conexion.getConnection();
+            
+            Integer clienteId = Integer.parseInt(request.getParameter("id"));
+            String nombre = request.getParameter("nombre");
+            String apellido = request.getParameter("apellido");
+            String fechaNacimiento = request.getParameter("fecha_nac");
+            Boolean activo = Boolean.parseBoolean(request.getParameter("activo"));
+            Integer nacionalidad = Integer.parseInt(request.getParameter("nacionalidad"));
+            Date fechaNac = null;
+            
+            try {
+                fechaNac = df.parse(fechaNacimiento);
+            } catch (Exception e) {
+                Logger.getLogger(NuevoServlet.class.getName()).log(Level.SEVERE, null, e);
+            }
+            
+            Cliente cliente = Cliente.getCliente(clienteId, conn);
+            
+            cliente.setNombre(nombre);
+            cliente.setApellido(apellido);
+            cliente.setFechaNac(fechaNac);
+            cliente.setActivo(activo);
+            cliente.setNacionalidad(new Nacionalidad(nacionalidad, conn));
+            
+            
+            cliente.update(conn);
+            
+            conn.close();
+            
+            response.sendRedirect("/CrudValde/home");
+            
+        } catch (NamingException | SQLException ex) {
+            Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
