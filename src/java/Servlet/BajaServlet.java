@@ -7,6 +7,14 @@ package Servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +39,33 @@ public class BajaServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         
+        try {
+            
+            response.setContentType("text/html;charset=UTF-8");
+            
+            Connection conn = ValdeUtils.Conexion.getConnection();
+            
+            Integer id = Integer.valueOf(request.getParameter("id"));
+            
+            
+            String sql = "DELETE FROM clientes "
+                + "WHERE id = ?";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1, id);
+
+            pstmt.executeUpdate();
+
+            pstmt.close();
+            
+            conn.close();
+            
+            response.sendRedirect("/CrudValde/home");
+            
+        } catch (NamingException | SQLException ex) {
+            Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -8,4 +8,5 @@
         <link rel="stylesheet" href="/CrudValde/assets/css/crud.css">
         <script src="/CrudValde/assets/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/CrudValde/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/CrudValde/assets/js/crud.js"></script>
     </head>
