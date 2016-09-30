@@ -1,23 +1,20 @@
 # CrudValdeJava
 
-CONFIGURACIÓN
+Requerimientos
+- Bower
 
-context.xml
+Pasos para el "deploy"
 
-<?xml version="1.0" encoding="UTF-8"?>
-<Context path="/CrudValde">
-    <ResourceLink global="jdbc/clientes" name="jdbc/clientes" type="javax.sql.DataSource" />
-</Context>
+- Clonar el repo
+- Crear la base de datos "clientes" en MySQL
+- Editar el archivo context.xml, usando los datos del que está en este repo (/config/context.xml)
+- Editar los datos de la etiqueta GlobalNamingResources el archivo server.xml, usando los datos del que está en este repo (/config/server.xml)
+- Importar el SQL ubicado en /sql/clientes.sql
+- Ubicarse en la carpeta assets y hacer "bower install"
+- Correr preferentemente sobre tomcat e ingresar a /CrudValde
+- ¡Voilá!
 
-server.xml
+Una vez corriendo la aplicación, usar los siguientes usuarios y contraseñas:
 
-<GlobalNamingResources>
-      <Resource name="jdbc/clientes" auth='container'
-            type="javax.sql.DataSource"
-            maxActive='100' maxIdle="30" maxWait="10000"
-            username="****"
-            password="****"
-            driverClassName='com.mysql.jdbc.Driver'
-            url='jdbc:mysql://localhost/clientes'/>
-    <Resource auth="Container" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" name="UserDatabase" pathname="conf/tomcat-users.xml" type="org.apache.catalina.UserDatabase"/>
-  </GlobalNamingResources>
+- usuario:usuario
+- administrador:administrador
