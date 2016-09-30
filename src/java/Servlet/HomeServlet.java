@@ -7,10 +7,12 @@ package Servlet;
 
 import ValdeUtils.Conexion;
 import java.io.IOException;
+import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,7 +37,7 @@ public class HomeServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion, response)){
+        if(Conexion.estaLogueado(sesion)){
             
             try {
 
@@ -71,6 +73,12 @@ public class HomeServlet extends HttpServlet {
 
                 request.getRequestDispatcher("WEB-INF/jsp/home.jsp").forward(request, response);
                 
+                Enumeration e = sesion.getAttributeNames();
+                while ( e.hasMoreElements() )
+                {
+                String key = (String)e.nextElement();
+                out.println( key + " = " + sesion.getAttribute( key ) + " <br>" );
+                }
                 
             } catch (NamingException | SQLException ex) {
                 Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);

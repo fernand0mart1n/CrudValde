@@ -9,8 +9,6 @@ import ValdeUtils.Conexion;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -42,7 +40,7 @@ public class ActivarServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion, response)){
+        if(Conexion.estaLogueado(sesion)){
         
             try {
 
@@ -67,6 +65,8 @@ public class ActivarServlet extends HttpServlet {
 
                 conn.close();
 
+                sesion.setAttribute("info", "El cliente " + cliente.toString() + " cambió su estado.");
+                
                 response.sendRedirect("/CrudValde/home");
 
             } catch (NamingException | SQLException ex) {

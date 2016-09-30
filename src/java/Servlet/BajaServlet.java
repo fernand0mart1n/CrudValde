@@ -8,11 +8,8 @@ package Servlet;
 import ValdeUtils.Conexion;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +38,7 @@ public class BajaServlet extends HttpServlet {
                     
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion, response)){
+        if(Conexion.estaLogueado(sesion)){
             
             try {
 
@@ -51,10 +48,14 @@ public class BajaServlet extends HttpServlet {
 
                 Cliente cliente = Cliente.getCliente(id, conn);
 
+                String nombre = cliente.getNombre() + " " + cliente.getApellido();
+                
                 cliente.delete(conn);
 
                 conn.close();
 
+                sesion.setAttribute("info", "El cliente " + nombre + " fué dado de baja éxitosamente");
+                
                 response.sendRedirect("/CrudValde/home");
 
             } catch (Exception ex) {

@@ -35,7 +35,7 @@ public class Conexion {
     }
     
     // verificamos si está logueado indagando en la variable de sesión
-    public static Boolean estaLogueado(HttpSession sesion, HttpServletResponse response) throws IOException {
+    public static Boolean estaLogueado(HttpSession sesion) throws IOException {
         if(sesion.getAttribute("usuario") == null){
                 
             return false;

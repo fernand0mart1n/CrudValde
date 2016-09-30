@@ -42,7 +42,7 @@ public class VerServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
         
-        if(Conexion.estaLogueado(sesion, response)){
+        if(Conexion.estaLogueado(sesion)){
             
             try {
 

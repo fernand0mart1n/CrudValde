@@ -47,19 +47,23 @@ public class LoginServlet extends HttpServlet {
             
             conn.close();
 
-            if(usuario != null && !Conexion.estaLogueado(sesion, response)){
+            if(usuario != null && !Conexion.estaLogueado(sesion)){
+                
                 //si coincide usuario y password y además no hay sesión iniciada
                 sesion.setAttribute("usuario", usu);
-                //redirijo a página con información de login exitoso
-                response.sendRedirect("/CrudValde/home");
                 
-                sesion.setAttribute("info", "Ingresaste correctamente.");
+                sesion.setAttribute("roles", UsuarioRol.getRoles(usuario.getId(), conn));
+                
+                //redirijo a página con información de login exitoso
+                sesion.setAttribute("info", "Ingresaste correctamente.");                
+                
+                response.sendRedirect("/CrudValde/home");
                 
             }else{
                 
                 sesion.setAttribute("error", "Usuario y/o contraseña incorrectos.");
                 
-                response.sendRedirect("/CrudValde/login");
+                Conexion.irAlLogin(response);
             }
         } catch (Exception e) {
         
@@ -69,14 +73,24 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        try {
-            
-            request.setAttribute("title", "Ingresar al sistema");
-            
-            request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
-          
-        } catch (Exception e) {
+        HttpSession sesion = request.getSession();
         
+        if(Conexion.estaLogueado(sesion)){
+            
+            response.sendRedirect("/CrudValde/home");
+            
+        } else {
+            
+            try {
+
+                request.setAttribute("title", "Ingresar al sistema");
+
+                request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
+
+            } catch (Exception e) {
+
+            }
+            
         }
     }
 }

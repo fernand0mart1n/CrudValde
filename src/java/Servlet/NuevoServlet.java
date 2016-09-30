@@ -39,7 +39,7 @@ public class NuevoServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion, response)){
+        if(Conexion.estaLogueado(sesion)){
             
             try {
 
@@ -82,7 +82,7 @@ public class NuevoServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion, response)){
+        if(Conexion.estaLogueado(sesion)){
             
             try {
                 
@@ -133,7 +133,9 @@ public class NuevoServlet extends HttpServlet {
 
                 pstmt.close();
                 conn.close();
-
+                
+                sesion.setAttribute("info", "El cliente " + nombre + apellido + " fué creado éxitosamente.");
+                
                 response.sendRedirect("/CrudValde/home");
 
             } catch (NamingException | SQLException ex) {
