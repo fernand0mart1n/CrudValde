@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import ValdeUtils.Conexion;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,7 +44,7 @@ public class VerServlet extends HttpServlet {
             
             Integer id = Integer.valueOf(request.getParameter("id"));
             
-            Connection conn = ValdeUtils.Conexion.getConnection();
+            Connection conn = Conexion.getConnection();
             
             String sql;
             sql = "SELECT * FROM clientes.clientes WHERE id = ?";

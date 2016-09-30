@@ -6,12 +6,9 @@
 package Servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -48,23 +45,15 @@ public class BajaServlet extends HttpServlet {
             
             Integer id = Integer.valueOf(request.getParameter("id"));
             
+            Cliente cliente = Cliente.getCliente(id, conn);
             
-            String sql = "DELETE FROM clientes "
-                + "WHERE id = ?";
-
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-
-            pstmt.setInt(1, id);
-
-            pstmt.executeUpdate();
-
-            pstmt.close();
+            cliente.delete(conn);
             
             conn.close();
             
             response.sendRedirect("/CrudValde/home");
             
-        } catch (NamingException | SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

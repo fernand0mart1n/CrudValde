@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import ValdeUtils.ValdeException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -137,6 +138,31 @@ public class Cliente {
         } catch (SQLException e) {
         }
         
+    }
+    
+    public void delete(Connection conn) throws ValdeException{
+        
+        String sql =
+                "   DELETE FROM"
+                + "     clientes"
+                + " WHERE"
+                + "     id = ?";
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1, this.id);
+
+            pstmt.executeUpdate();
+
+            pstmt.close();
+            
+        } catch (SQLException e) {
+            throw new ValdeException("uuuh");
+        }
+        
+        
+
         
     }
 }

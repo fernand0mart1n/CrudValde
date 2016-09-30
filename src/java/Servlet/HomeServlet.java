@@ -21,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,7 +32,9 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-        
+            
+            HttpSession sesion = request.getSession();
+            
             response.setContentType("text/html;charset=UTF-8");
             
             Connection conn = ValdeUtils.Conexion.getConnection();
@@ -57,8 +60,6 @@ public class HomeServlet extends HttpServlet {
             
             pstmt.close();
             conn.close();
-            
-            String title = null;
 
             request.setAttribute("title", "Listado de clientes");
 

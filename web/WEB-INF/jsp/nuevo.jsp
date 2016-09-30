@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="layout.jsp"></jsp:include>
-    <body>
         <div class="col-xs-offset-3 col-xs-6">
             <legend>Nuevo cliente</legend>
             <form class="form form-horizontal" method="POST" action="/CrudValde/nuevo">
@@ -19,7 +18,7 @@
                 <div class="form-group">
                     <label class="col-xs-4 control-label" for="fecha_nac"><b>Fecha de nacimiento:</b></label>
                     <div class="col-xs-8">
-                        <input type="date" id="fecha_nac" name="fecha_nac" class="form-control" required autofocus>
+                        <input type="date" id="fecha_nac" name="fecha_nac" class="form-control datepicker" required autofocus>
                     </div>
                 </div>
                 <div class="form-group">

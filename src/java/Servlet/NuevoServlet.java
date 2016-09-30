@@ -23,6 +23,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -30,14 +31,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "NuevoServlet", urlPatterns = {"/nuevo"})
 public class NuevoServlet extends HttpServlet {
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        HttpSession session = request.getSession();
+        
         response.setContentType("text/html;charset=UTF-8");
         
         try {
-        
+            
             response.setContentType("text/html;charset=UTF-8");
             
             Connection conn = ValdeUtils.Conexion.getConnection();
@@ -48,12 +52,12 @@ public class NuevoServlet extends HttpServlet {
 
             List <HashMap<String, Object>> nacionalidad = new LinkedList();
             
-                while(rs.next()){
-                    HashMap row = new HashMap();
-                    row.put("id", rs.getInt("id"));
-                    row.put("nacionalidad", rs.getString("nacionalidad"));
-                    nacionalidad.add(row);
-                }
+            while(rs.next()){
+                HashMap row = new HashMap();
+                row.put("id", rs.getInt("id"));
+                row.put("nacionalidad", rs.getString("nacionalidad"));
+                nacionalidad.add(row);
+            }
             
             request.setAttribute("nacionalidad", nacionalidad);
             
