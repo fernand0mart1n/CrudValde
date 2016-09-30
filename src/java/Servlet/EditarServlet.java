@@ -7,7 +7,6 @@ package Servlet;
 
 import ValdeUtils.Conexion;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,7 +45,7 @@ public class EditarServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion, response)){
+        if(Conexion.estaLogueado(sesion)){
             
             try {
 
@@ -102,7 +101,7 @@ public class EditarServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion, response)){
+        if(Conexion.estaLogueado(sesion)){
             
             try {
 
@@ -135,7 +134,9 @@ public class EditarServlet extends HttpServlet {
                 cliente.update(conn);
 
                 conn.close();
-
+                
+                sesion.setAttribute("info", "El cliente " + cliente.toString() + " fué modificado correctamente");
+                
                 response.sendRedirect("/CrudValde/home");
 
             } catch (NamingException | SQLException ex) {
