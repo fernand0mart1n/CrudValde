@@ -140,6 +140,27 @@ public class Cliente {
         
     }
     
+    public void activar(Connection conn){
+        
+        String sql = "UPDATE clientes "
+                + "SET activo = ? "
+                + "WHERE id = ?";
+
+        try {
+            
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setBoolean(1, this.activo);
+            pstmt.setInt(2, this.id);
+            
+            pstmt.executeUpdate();
+            
+            pstmt.close();
+        } catch (SQLException e) {
+        }
+        
+    }
+    
     public void delete(Connection conn) throws ValdeException{
         
         String sql =

@@ -17,7 +17,7 @@
             </div>
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-        <div class="col-xs-offset-2 col-xs-8 ">
+        <div class="col-xs-offset-1 col-xs-10 ">
             <table class="table table-responsive table-striped table-hover table-condensed">
                 <thead>
                     <h3>Clientes</h3>
@@ -59,16 +59,22 @@
                             </td>
                             <td>
                                 <c:if test="${cliente.activo == 1}">
-                                    Si
+                                    <span class="glyphicon glyphicon-ok-circle"></span>
                                 </c:if>
                                 <c:if test="${cliente.activo == 0}">
-                                    No
+                                    <span class="glyphicon glyphicon-remove-circle"></span>
                                 </c:if>
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a class="btn btn-info" href="/CrudValde/ver?id=${cliente.id}"><span class="glyphicon glyphicon-eye-open"></span> Ver</a>
+                                    <a class="btn btn-default" href="/CrudValde/ver?id=${cliente.id}"><span class="glyphicon glyphicon-eye-open"></span> Ver</a>
                                     <a class="btn btn-primary" href="/CrudValde/editar?id=${cliente.id}"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
+                                    <c:if test="${cliente.activo == 1}">
+                                        <a class="btn btn-info" href="/CrudValde/activar?id=${cliente.id}&activo=${cliente.activo}"><span class="glyphicon glyphicon-remove"></span> Desactivar</a>
+                                    </c:if>
+                                    <c:if test="${cliente.activo == 0}">
+                                        <a class="btn btn-info" href="/CrudValde/activar?id=${cliente.id}&activo=${cliente.activo}"><span class="glyphicon glyphicon-ok"></span> Activar</a>
+                                    </c:if>
                                     <button type="button" class="btn btn-danger" id="${cliente.id}" onclick="eliminar(${cliente.id})"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
                                 </div>                                    
                             </td>

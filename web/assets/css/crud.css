@@ -1,8 +1,17 @@
 legend {
     text-align: center;
-    padding-top: 50px;
 }
 
-h3 {
-    padding-top: 50px;
+th, td {
+	text-align: center;
+	vertical-align: middle !important;
+}
+
+.alert-danger {
+	margin-bottom: 0px;
+	margin-top: 15px;
+}
+
+.alert-info {
+	text-align: center;
 }

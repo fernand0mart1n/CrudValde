@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/CrudValde/assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/CrudValde/assets/bower_components/jquery-ui/themes/excite-bike/jquery-ui.min.css">
+        <link rel="stylesheet" href="/CrudValde/assets/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
         <link rel="stylesheet" href="/CrudValde/assets/css/crud.css">
         <script src="/CrudValde/assets/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/CrudValde/assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
