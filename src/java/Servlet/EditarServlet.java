@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import ValdeUtils.Conexion;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -22,6 +23,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,46 +44,55 @@ public class EditarServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        try {
-        
-            response.setContentType("text/html;charset=UTF-8");
+        HttpSession sesion = request.getSession();
             
-            Integer clienteId = Integer.parseInt(request.getParameter("id"));
+        if(Conexion.estaLogueado(sesion, response)){
             
-            Connection conn = ValdeUtils.Conexion.getConnection();
-            
-            String sql;
-            sql = "SELECT * FROM clientes.clientes WHERE id = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, clienteId);
-            ResultSet rs = pstmt.executeQuery();        
+            try {
 
-            if (rs.next()) {
-                Cliente cliente = new Cliente();
+                response.setContentType("text/html;charset=UTF-8");
+
+                Integer clienteId = Integer.parseInt(request.getParameter("id"));
+
+                Connection conn = ValdeUtils.Conexion.getConnection();
+
+                String sql;
+                sql = "SELECT * FROM clientes.clientes WHERE id = ?";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, clienteId);
+                ResultSet rs = pstmt.executeQuery();
                 
-                cliente.setNombre(rs.getString("nombre"));
-                cliente.setActivo(rs.getBoolean("activo"));
-                cliente.setApellido(rs.getString("apellido"));
-                cliente.setFechaNac(rs.getDate("fecha_nac"));
-                cliente.setNacionalidad(new Nacionalidad(rs.getInt("nacionalidad_id"), conn));
-                
-                request.setAttribute("cliente", cliente);
-                
-                request.setAttribute("title", "Editar cliente " + cliente.toString());
+                if (rs.next()) {
+                    Cliente cliente = new Cliente();
+
+                    cliente.setNombre(rs.getString("nombre"));
+                    cliente.setActivo(rs.getBoolean("activo"));
+                    cliente.setApellido(rs.getString("apellido"));
+                    cliente.setFechaNac(rs.getDate("fecha_nac"));
+                    cliente.setNacionalidad(new Nacionalidad(rs.getInt("nacionalidad_id"), conn));
+
+                    request.setAttribute("cliente", cliente);
+
+                    request.setAttribute("title", "Editar cliente " + cliente.toString());
+                }
+
+                List<Nacionalidad> nacionalidades = Nacionalidad.all(conn);
+
+                request.setAttribute("cliente_id", clienteId);
+                request.setAttribute("nacionalidades", nacionalidades);
+
+                pstmt.close();
+                conn.close();
+
+                request.getRequestDispatcher("WEB-INF/jsp/editar.jsp").forward(request, response);
+
+            } catch (NamingException | SQLException ex) {
+                Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else {
             
-            List<Nacionalidad> nacionalidades = Nacionalidad.all(conn);
+            Conexion.irAlLogin(response);
             
-            request.setAttribute("cliente_id", clienteId);
-            request.setAttribute("nacionalidades", nacionalidades);
-            
-            pstmt.close();
-            conn.close();
-            
-            request.getRequestDispatcher("WEB-INF/jsp/editar.jsp").forward(request, response);
-            
-        } catch (NamingException | SQLException ex) {
-            Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
@@ -89,45 +100,49 @@ public class EditarServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        try {
+        HttpSession sesion = request.getSession();
             
-            response.setContentType("text/html;charset=UTF-8");
-            
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            
-            Connection conn = ValdeUtils.Conexion.getConnection();
-            
-            Integer clienteId = Integer.parseInt(request.getParameter("id"));
-            String nombre = request.getParameter("nombre");
-            String apellido = request.getParameter("apellido");
-            String fechaNacimiento = request.getParameter("fecha_nac");
-            Boolean activo = Boolean.parseBoolean(request.getParameter("activo"));
-            Integer nacionalidad = Integer.parseInt(request.getParameter("nacionalidad"));
-            Date fechaNac = null;
+        if(Conexion.estaLogueado(sesion, response)){
             
             try {
-                fechaNac = df.parse(fechaNacimiento);
-            } catch (Exception e) {
-                Logger.getLogger(NuevoServlet.class.getName()).log(Level.SEVERE, null, e);
+
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+                Connection conn = ValdeUtils.Conexion.getConnection();
+
+                Integer clienteId = Integer.parseInt(request.getParameter("id"));
+                String nombre = request.getParameter("nombre");
+                String apellido = request.getParameter("apellido");
+                String fechaNacimiento = request.getParameter("fecha_nac");
+                Boolean activo = Boolean.parseBoolean(request.getParameter("activo"));
+                Integer nacionalidad = Integer.parseInt(request.getParameter("nacionalidad"));
+                Date fechaNac = null;
+
+                try {
+                    fechaNac = df.parse(fechaNacimiento);
+                } catch (Exception e) {
+                    Logger.getLogger(NuevoServlet.class.getName()).log(Level.SEVERE, null, e);
+                }
+
+                Cliente cliente = Cliente.getCliente(clienteId, conn);
+
+                cliente.setNombre(nombre);
+                cliente.setApellido(apellido);
+                cliente.setFechaNac(fechaNac);
+                cliente.setActivo(activo);
+                cliente.setNacionalidad(new Nacionalidad(nacionalidad, conn));
+
+                cliente.update(conn);
+
+                conn.close();
+
+                response.sendRedirect("/CrudValde/home");
+
+            } catch (NamingException | SQLException ex) {
+                Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            Cliente cliente = Cliente.getCliente(clienteId, conn);
-            
-            cliente.setNombre(nombre);
-            cliente.setApellido(apellido);
-            cliente.setFechaNac(fechaNac);
-            cliente.setActivo(activo);
-            cliente.setNacionalidad(new Nacionalidad(nacionalidad, conn));
-            
-            
-            cliente.update(conn);
-            
-            conn.close();
-            
-            response.sendRedirect("/CrudValde/home");
-            
-        } catch (NamingException | SQLException ex) {
-            Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            Conexion.irAlLogin(response);
         }
     }
 }

@@ -98,6 +98,7 @@ public class Cliente {
         this.id = id;
     }
     
+    // devuelvo nombre y apellido concatenados, usado para mostrar datos en el title
     @Override
     public String toString() {
         return this.getApellido() + ", " + this.getNombre();
@@ -111,6 +112,7 @@ public class Cliente {
         this.fechaNac = fechaNac;
     }
     
+    // método que modifica el cliente
     public void update(Connection conn){
         
         String sql = "UPDATE clientes "
@@ -140,6 +142,7 @@ public class Cliente {
         
     }
     
+    // método que activa o desactiva al cliente
     public void activar(Connection conn){
         
         String sql = "UPDATE clientes "
@@ -161,6 +164,7 @@ public class Cliente {
         
     }
     
+    // método que eliminar un cliente
     public void delete(Connection conn) throws ValdeException{
         
         String sql =
@@ -181,9 +185,5 @@ public class Cliente {
         } catch (SQLException e) {
             throw new ValdeException("uuuh");
         }
-        
-        
-
-        
     }
 }

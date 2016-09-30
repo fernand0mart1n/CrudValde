@@ -9,11 +9,11 @@ function eliminar(cliente_id){
     $("#btnDel").click(function () {
         $.ajax({
             type: "POST",
-            url: "eliminarcontroller.php",
+            url: "/CrudValde/baja",
             data: info, // pasamos el id por post al controller que hace la baja
             success: function(){
                 // redirigimos al index y desde el controller enviamos un mensaje de éxito o error
-                window.location.href = 'homecontroller.php';
+                window.location.href = '/CrudValde/home';
             }
         });
     });

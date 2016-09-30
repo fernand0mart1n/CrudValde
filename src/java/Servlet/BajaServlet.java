@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import ValdeUtils.Conexion;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -36,25 +38,32 @@ public class BajaServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        try {
+                    
+        HttpSession sesion = request.getSession();
             
-            response.setContentType("text/html;charset=UTF-8");
+        if(Conexion.estaLogueado(sesion, response)){
             
-            Connection conn = ValdeUtils.Conexion.getConnection();
+            try {
+
+                Connection conn = ValdeUtils.Conexion.getConnection();
+
+                Integer id = Integer.valueOf(request.getParameter("id"));
+
+                Cliente cliente = Cliente.getCliente(id, conn);
+
+                cliente.delete(conn);
+
+                conn.close();
+
+                response.sendRedirect("/CrudValde/home");
+
+            } catch (Exception ex) {
+                Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
             
-            Integer id = Integer.valueOf(request.getParameter("id"));
+            Conexion.irAlLogin(response);
             
-            Cliente cliente = Cliente.getCliente(id, conn);
-            
-            cliente.delete(conn);
-            
-            conn.close();
-            
-            response.sendRedirect("/CrudValde/home");
-            
-        } catch (Exception ex) {
-            Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

@@ -20,6 +20,7 @@ public class Nacionalidad {
     private Integer id;
     private String nacionalidad;
 
+    // método que trae todas las nacionalidades para listar en los selects
     public static List<Nacionalidad> all(Connection conn) {
         
         List<Nacionalidad> ns = new LinkedList<>();

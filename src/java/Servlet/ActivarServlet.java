@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import ValdeUtils.Conexion;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,31 +40,40 @@ public class ActivarServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        try {
+        HttpSession sesion = request.getSession();
             
-            response.setContentType("text/html;charset=UTF-8");
+        if(Conexion.estaLogueado(sesion, response)){
+        
+            try {
+
+                response.setContentType("text/html;charset=UTF-8");
+
+                Connection conn = ValdeUtils.Conexion.getConnection();
+
+                Integer clienteId = Integer.parseInt(request.getParameter("id"));
+                Boolean activo = Boolean.parseBoolean(request.getParameter("activo"));
+
+                Cliente cliente = Cliente.getCliente(clienteId, conn);
+
+                // si está activo lo desactivo y viceversa
+                if (cliente.getActivo()) {
+                    cliente.setActivo(false);
+                } else {
+                    cliente.setActivo(true);
+                }
             
-            Connection conn = ValdeUtils.Conexion.getConnection();
-            
-            Integer clienteId = Integer.parseInt(request.getParameter("id"));
-            Boolean activo = Boolean.parseBoolean(request.getParameter("activo"));
-            
-            Cliente cliente = Cliente.getCliente(clienteId, conn);
-            
-            if (cliente.getActivo()) {
-                cliente.setActivo(false);
-            } else {
-                cliente.setActivo(true);
+                // plasmamos el cambio anterior en la BD
+                cliente.activar(conn);
+
+                conn.close();
+
+                response.sendRedirect("/CrudValde/home");
+
+            } catch (NamingException | SQLException ex) {
+                Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            cliente.activar(conn);
-            
-            conn.close();
-            
-            response.sendRedirect("/CrudValde/home");
-            
-        } catch (NamingException | SQLException ex) {
-            Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            Conexion.irAlLogin(response);
         }
     }
 }

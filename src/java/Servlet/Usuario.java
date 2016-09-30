@@ -43,6 +43,10 @@ public class Usuario {
         this.password = password;
     }
     
+    /*
+    método que trae al usuario y verifico que coincide la contraseña enviada 
+    con la que está hasheada en la BD
+    */
     public static Usuario getUsuario(String nombreUsuario, String pass, Connection conn) {
         
         Usuario usuario = null;

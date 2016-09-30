@@ -7,7 +7,7 @@ package ValdeUtils;
 
 /**
  *
- * @author bhallen
+ * @author fer
  */
 public class ValdeException extends Exception{
     

@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import ValdeUtils.Conexion;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,42 +32,53 @@ import javax.servlet.http.HttpSession;
 public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
+        
+        HttpSession sesion = request.getSession();
             
-            HttpSession sesion = request.getSession();
+        if(Conexion.estaLogueado(sesion, response)){
             
-            response.setContentType("text/html;charset=UTF-8");
-            
-            Connection conn = ValdeUtils.Conexion.getConnection();
-            
-            String sql = "SELECT * FROM clientes.clientes";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
+            try {
 
-            List <HashMap<String, Object>> resultado = new LinkedList();
-            
+                response.setContentType("text/html;charset=UTF-8");
+
+                Connection conn = Conexion.getConnection();
+
+                String sql = "SELECT * FROM clientes.clientes";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery();
+
+                List <HashMap<String, Object>> resultado = new LinkedList();
+                
                 while(rs.next()){
                     HashMap row = new HashMap();
                     row.put("id", rs.getInt("id"));
                     row.put("nombre", rs.getString("nombre"));
                     row.put("apellido", rs.getString("apellido"));
-                    row.put("fecha_nac", rs.getDate("fecha_nac"));
+                    // acá abajo parseamos la edad
+                    row.put("fecha_nac", Conexion.calcularEdad(rs.getDate("fecha_nac")));
+                    // vinculamos el id de nacionalidad con la nacionalidad en sí
                     row.put("nacionalidad", new Nacionalidad(rs.getInt("nacionalidad_id"), conn));
                     row.put("activo", rs.getInt("activo"));
                     resultado.add(row);
                 }
-            
-            request.setAttribute("resultado", resultado);
-            
-            pstmt.close();
-            conn.close();
+                
+                request.setAttribute("resultado", resultado);
 
-            request.setAttribute("title", "Listado de clientes");
+                pstmt.close();
+                conn.close();
 
-            request.getRequestDispatcher("WEB-INF/jsp/home.jsp").forward(request, response);
+                request.setAttribute("title", "Listado de clientes");
+
+                request.getRequestDispatcher("WEB-INF/jsp/home.jsp").forward(request, response);
+                
+                
+            } catch (NamingException | SQLException ex) {
+                Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
             
-        } catch (NamingException | SQLException ex) {
-            Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Conexion.irAlLogin(response);
+            
         }
     }
 }

@@ -5,6 +5,7 @@
  */
 package Servlet;
 
+import ValdeUtils.Conexion;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,99 +37,110 @@ public class NuevoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession();
-        
-        response.setContentType("text/html;charset=UTF-8");
-        
-        try {
+        HttpSession sesion = request.getSession();
             
-            response.setContentType("text/html;charset=UTF-8");
+        if(Conexion.estaLogueado(sesion, response)){
             
-            Connection conn = ValdeUtils.Conexion.getConnection();
-            
-            String sql = "SELECT * FROM clientes.nacionalidades";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
+            try {
 
-            List <HashMap<String, Object>> nacionalidad = new LinkedList();
+                response.setContentType("text/html;charset=UTF-8");
+
+                Connection conn = ValdeUtils.Conexion.getConnection();
+
+                String sql = "SELECT * FROM clientes.nacionalidades";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery();
+
+                List <HashMap<String, Object>> nacionalidad = new LinkedList();
+
+                while(rs.next()){
+                    HashMap row = new HashMap();
+                    row.put("id", rs.getInt("id"));
+                    row.put("nacionalidad", rs.getString("nacionalidad"));
+                    nacionalidad.add(row);
+                }
+
+                request.setAttribute("nacionalidad", nacionalidad);
+
+                request.setAttribute("title", "Nuevo cliente");
+
+                request.getRequestDispatcher("WEB-INF/jsp/nuevo.jsp").forward(request, response);
+
+            } catch (NamingException | SQLException ex) {
+                Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }       
+        } else {
             
-            while(rs.next()){
-                HashMap row = new HashMap();
-                row.put("id", rs.getInt("id"));
-                row.put("nacionalidad", rs.getString("nacionalidad"));
-                nacionalidad.add(row);
-            }
+            Conexion.irAlLogin(response);
             
-            request.setAttribute("nacionalidad", nacionalidad);
-            
-            request.setAttribute("title", "Nuevo cliente");
-         
-            request.getRequestDispatcher("WEB-INF/jsp/nuevo.jsp").forward(request, response);
-            
-        } catch (NamingException | SQLException ex) {
-            Logger.getLogger(HomeServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     }
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {        
-        try {
+        
+        HttpSession sesion = request.getSession();
             
-            response.setContentType("text/html;charset=UTF-8");
-            
-            String nombre = request.getParameter("nombre");
-            String apellido = request.getParameter("apellido");
-            String fecha_nacimiento = request.getParameter("fecha_nac");
-            Integer nacionalidad = Integer.valueOf(request.getParameter("nacionalidad"));
-            
-            Boolean activo = false;
-                    
-            if ("1".equals(request.getParameter("activo"))) {
-                activo = true;
-            }
-            
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            
-            Date fecha_nac = null;
+        if(Conexion.estaLogueado(sesion, response)){
             
             try {
-                fecha_nac = df.parse(fecha_nacimiento);
-            } catch (Exception e) {
-                Logger.getLogger(NuevoServlet.class.getName()).log(Level.SEVERE, null, e);
-            }
-            
-            Connection conn = ValdeUtils.Conexion.getConnection();
-            
-            String sql = "INSERT INTO clientes.clientes "
-                    + "(nombre,"
-                    + "apellido,"
-                    + "fecha_nac,"
-                    + "nacionalidad_id,"
-                    + "activo) "
-                    + "VALUES(?,"
-                    + "?,"
-                    + "?,"
-                    + "?,"
-                    + "?)";
-            
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+                
+                String nombre = request.getParameter("nombre");
+                String apellido = request.getParameter("apellido");
+                String fecha_nacimiento = request.getParameter("fecha_nac");
+                Integer nacionalidad = Integer.valueOf(request.getParameter("nacionalidad"));
 
-            pstmt.setString(1, nombre);
-            pstmt.setString(2, apellido);
-            pstmt.setDate(3, new java.sql.Date(fecha_nac.getTime()));
-            pstmt.setInt(4, nacionalidad);
-            pstmt.setBoolean(5, activo);
-            
-            pstmt.execute();
-            
-            pstmt.close();
-            conn.close();
-            
-            response.sendRedirect("/CrudValde/home");
-            
-        } catch (NamingException | SQLException ex) {
-            Logger.getLogger(NuevoServlet.class.getName()).log(Level.SEVERE, null, ex);
+                Boolean activo = false;
+
+                if ("1".equals(request.getParameter("activo"))) {
+                    activo = true;
+                }
+
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+                Date fecha_nac = null;
+
+                try {
+                    fecha_nac = df.parse(fecha_nacimiento);
+                } catch (Exception e) {
+                    Logger.getLogger(NuevoServlet.class.getName()).log(Level.SEVERE, null, e);
+                }
+
+                Connection conn = ValdeUtils.Conexion.getConnection();
+
+                String sql = "INSERT INTO clientes.clientes "
+                        + "(nombre,"
+                        + "apellido,"
+                        + "fecha_nac,"
+                        + "nacionalidad_id,"
+                        + "activo) "
+                        + "VALUES(?,"
+                        + "?,"
+                        + "?,"
+                        + "?,"
+                        + "?)";
+
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+
+                pstmt.setString(1, nombre);
+                pstmt.setString(2, apellido);
+                pstmt.setDate(3, new java.sql.Date(fecha_nac.getTime()));
+                pstmt.setInt(4, nacionalidad);
+                pstmt.setBoolean(5, activo);
+
+                pstmt.execute();
+
+                pstmt.close();
+                conn.close();
+
+                response.sendRedirect("/CrudValde/home");
+
+            } catch (NamingException | SQLException ex) {
+                Logger.getLogger(NuevoServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            Conexion.irAlLogin(response);
         }
     }
 }

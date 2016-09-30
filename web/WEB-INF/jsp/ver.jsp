@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="layout.jsp"></jsp:include>
         <div class="col-xs-offset-3 col-xs-6">
-            <legend>Ver cliente</legend>
+            <legend>${title}</legend>
             <form class="form form-horizontal" method="POST" action="/CrudValdeJava/nuevo">
                 <div class="form-group">
                     <label class="col-xs-4 control-label" for="nombre"><b>Nombre:</b></label>

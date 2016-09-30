@@ -35,7 +35,6 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         
         try {
-            response.setContentType("text/html;charset=UTF-8");
         
             HttpSession sesion = request.getSession();
             String usu, pass;
@@ -48,11 +47,14 @@ public class LoginServlet extends HttpServlet {
             
             conn.close();
 
-            if(usuario != null && sesion.getAttribute("usuario") == null){
+            if(usuario != null && !Conexion.estaLogueado(sesion, response)){
                 //si coincide usuario y password y además no hay sesión iniciada
                 sesion.setAttribute("usuario", usu);
                 //redirijo a página con información de login exitoso
                 response.sendRedirect("/CrudValde/home");
+                
+                sesion.setAttribute("info", "Ingresaste correctamente.");
+                
             }else{
                 
                 sesion.setAttribute("error", "Usuario y/o contraseña incorrectos.");
@@ -68,6 +70,8 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         
         try {
+            
+            request.setAttribute("title", "Ingresar al sistema");
             
             request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
           
