@@ -82,6 +82,11 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <c:if test="${info != null}">
+                <div class="alert alert-info" role="alert">
+                <strong>${info}</strong></div>
+            </c:if>
+            <c:remove var="info" scope="session" />
             <hr>
             <a class="btn btn-success pull-right" href="/CrudValde/nuevo"><span class="glyphicon glyphicon-plus"></span> Nuevo cliente</a>
         </div>
