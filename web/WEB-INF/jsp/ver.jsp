@@ -47,9 +47,11 @@
                         <a class="btn btn-primary" href="/CrudValde/home">
                             <span class="glyphicon glyphicon-chevron-left"></span> Volver al listado
                         </a>
-                        <a class="btn btn-warning pull-right" href="/CrudValde/editar?id=${cliente.id}">
-                            Editar cliente <span class="glyphicon glyphicon-pencil"></span>
-                        </a>
+                        <c:if test="${sessionScope.roles.contains('editar_clientes')}">
+                            <a class="btn btn-primary pull-right" href="/CrudValde/editar?id=${cliente.id}">
+                                Editar cliente <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </c:if>
                     </div>
                 </div>
             </form>

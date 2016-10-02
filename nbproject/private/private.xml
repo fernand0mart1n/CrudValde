@@ -6,17 +6,21 @@
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/Usuario.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/web/WEB-INF/jsp/layout.jsp</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/web/index.html</file>
+            <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/ActivarServlet.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/BajaServlet.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/web/WEB-INF/jsp/ver.jsp</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/Cliente.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/web/WEB-INF/jsp/home.jsp</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/VerServlet.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/web/WEB-INF/jsp/login.jsp</file>
+            <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/Nacionalidad.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/web/WEB-INF/jsp/nuevo.jsp</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/LoginServlet.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/NuevoServlet.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/EditarServlet.java</file>
+            <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/ValdeUtils/ValdeException.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/HomeServlet.java</file>
+            <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/UsuarioRol.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/ValdeUtils/Conexion.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/src/java/Servlet/LogoutServlet.java</file>
             <file>file:/home/fer/NetBeansProjects/CrudValdeJava/web/WEB-INF/jsp/editar.jsp</file>

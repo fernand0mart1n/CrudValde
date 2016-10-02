@@ -40,7 +40,7 @@ public class ActivarServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion)){
+        if(Conexion.estaLogueado(sesion) && Conexion.tienePermiso(sesion, "editar_clientes")){
         
             try {
 
@@ -49,7 +49,6 @@ public class ActivarServlet extends HttpServlet {
                 Connection conn = ValdeUtils.Conexion.getConnection();
 
                 Integer clienteId = Integer.parseInt(request.getParameter("id"));
-                Boolean activo = Boolean.parseBoolean(request.getParameter("activo"));
 
                 Cliente cliente = Cliente.getCliente(clienteId, conn);
 

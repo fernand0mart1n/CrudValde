@@ -5,10 +5,10 @@
  */
 package Servlet;
 
+import ValdeUtils.ValdeException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,20 +37,21 @@ public class UsuarioRol {
     }
     
     // método que me trae los permisos de los usuarios
-    public static List <Integer> getRoles(Integer usuarioId, Connection conn) {
-                
-        List <Integer> resultado = new LinkedList();
-        Integer roles = null;
+    public static List <String> getRoles(Integer usuarioId, Connection conn) throws ValdeException {
+        
+        List <String> roles = new LinkedList();
         
         try {
             
             String sql =
                     "   SELECT"
-                    + "     rol "
+                    + "     r.nombre AS rol"
                     + " FROM"
-                    + "     usuario_rol "
+                    + "     usuario_rol ur,"
+                    + "     roles r"
                     + " WHERE"
-                    + "     usuario = ?";
+                    + "     ur.usuario = ?"
+                    + "     AND r.id = ur.rol";
             
             PreparedStatement ps = conn.prepareStatement(sql);
             
@@ -58,17 +59,17 @@ public class UsuarioRol {
             
             ResultSet rs = ps.executeQuery();
             
-            if (rs.next()) {
+            while (rs.next()) {
                 
-                roles = rs.getInt("rol");
+                String rol = rs.getString("rol");
                 
-                resultado.add(roles);
+                roles.add(rol);
             }
             
-        } catch (SQLException e) {
-            
+        } catch (Exception e) {
+            throw new ValdeException(e.getMessage());
         }
         
-        return resultado;
+        return roles;
     }
 }

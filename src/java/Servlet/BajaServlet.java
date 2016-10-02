@@ -38,7 +38,7 @@ public class BajaServlet extends HttpServlet {
                     
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion)){
+        if(Conexion.estaLogueado(sesion) && Conexion.tienePermiso(sesion, "baja_clientes")){
             
             try {
 

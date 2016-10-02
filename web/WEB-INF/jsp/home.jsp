@@ -68,14 +68,20 @@
                             <td>
                                 <div class="btn-group">
                                     <a class="btn btn-default" href="/CrudValde/ver?id=${cliente.id}"><span class="glyphicon glyphicon-eye-open"></span> Ver</a>
-                                    <a class="btn btn-primary" href="/CrudValde/editar?id=${cliente.id}"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
-                                    <c:if test="${cliente.activo == 1}">
-                                        <a class="btn btn-info" href="/CrudValde/activar?id=${cliente.id}&activo=${cliente.activo}"><span class="glyphicon glyphicon-remove"></span> Desactivar</a>
+                                    <c:if test="${sessionScope.roles.contains('editar_clientes')}">
+                                        <a class="btn btn-primary" href="/CrudValde/editar?id=${cliente.id}"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
+                                    </c:if>    
+                                    <c:if test="${sessionScope.roles.contains('editar_clientes')}">
+                                        <c:if test="${cliente.activo == 1}">
+                                            <a class="btn btn-info" href="/CrudValde/activar?id=${cliente.id}&activo=${cliente.activo}"><span class="glyphicon glyphicon-remove"></span> Desactivar</a>
+                                        </c:if>
+                                        <c:if test="${cliente.activo == 0}">
+                                            <a class="btn btn-info" href="/CrudValde/activar?id=${cliente.id}&activo=${cliente.activo}"><span class="glyphicon glyphicon-ok"></span> Activar</a>
+                                        </c:if>
                                     </c:if>
-                                    <c:if test="${cliente.activo == 0}">
-                                        <a class="btn btn-info" href="/CrudValde/activar?id=${cliente.id}&activo=${cliente.activo}"><span class="glyphicon glyphicon-ok"></span> Activar</a>
+                                    <c:if test="${sessionScope.roles.contains('baja_clientes')}">
+                                        <button type="button" class="btn btn-danger" id="${cliente.id}" onclick="eliminar(${cliente.id})"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
                                     </c:if>
-                                    <button type="button" class="btn btn-danger" id="${cliente.id}" onclick="eliminar(${cliente.id})"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
                                 </div>                                    
                             </td>
                         </tr>
@@ -88,7 +94,9 @@
             </c:if>
             <c:remove var="info" scope="session" />
             <hr>
-            <a class="btn btn-success pull-right" href="/CrudValde/nuevo"><span class="glyphicon glyphicon-plus"></span> Nuevo cliente</a>
+            <c:if test="${sessionScope.roles.contains('alta_clientes')}">
+                <a class="btn btn-success pull-right" href="/CrudValde/nuevo"><span class="glyphicon glyphicon-plus"></span> Nuevo cliente</a>
+            </c:if>
         </div>
     </body>
 </html>

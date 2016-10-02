@@ -39,7 +39,7 @@ public class NuevoServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion)){
+        if(Conexion.estaLogueado(sesion) && Conexion.tienePermiso(sesion, "alta_clientes")){
             
             try {
 
@@ -82,7 +82,7 @@ public class NuevoServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion)){
+        if(Conexion.estaLogueado(sesion) && Conexion.tienePermiso(sesion, "alta_clientes")){
             
             try {
                 

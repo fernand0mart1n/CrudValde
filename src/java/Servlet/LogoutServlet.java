@@ -35,8 +35,10 @@ public class LogoutServlet extends HttpServlet {
         HttpSession sesion = request.getSession();
         
         sesion.invalidate();
-                
-        sesion.setAttribute("info", "Saliste correctamente.");
+        
+        sesion = request.getSession();
+        
+        sesion.setAttribute("info", "Lo re vimo' ameo!!");
         
         response.sendRedirect("/CrudValde/login");
             

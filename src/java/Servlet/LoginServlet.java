@@ -41,17 +41,16 @@ public class LoginServlet extends HttpServlet {
             usu = request.getParameter("nombre_usuario");
             pass = request.getParameter("password");
 
-            Connection conn = Conexion.getConnection();
+            Connection conn = ValdeUtils.Conexion.getConnection();
 
             Usuario usuario = Usuario.getUsuario(usu, pass, conn);
-            
-            conn.close();
 
             if(usuario != null && !Conexion.estaLogueado(sesion)){
                 
                 //si coincide usuario y password y además no hay sesión iniciada
                 sesion.setAttribute("usuario", usu);
                 
+                // traigo sus permisos
                 sesion.setAttribute("roles", UsuarioRol.getRoles(usuario.getId(), conn));
                 
                 //redirijo a página con información de login exitoso
@@ -65,6 +64,9 @@ public class LoginServlet extends HttpServlet {
                 
                 Conexion.irAlLogin(response);
             }
+            
+            conn.close();
+            
         } catch (Exception e) {
         
         }
@@ -84,6 +86,8 @@ public class LoginServlet extends HttpServlet {
             try {
 
                 request.setAttribute("title", "Ingresar al sistema");
+                
+                String info = request.getParameter("info");
 
                 request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
 

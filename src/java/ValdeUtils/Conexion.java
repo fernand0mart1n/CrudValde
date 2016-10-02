@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.util.Date;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.LinkedList;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -44,6 +45,12 @@ public class Conexion {
             return true;
         }
     }
+    
+    // comprobamos permisos
+    public static Boolean tienePermiso(HttpSession sesion, String permiso) throws IOException {
+        return ((LinkedList)sesion.getAttribute("roles")).contains(permiso);
+    }
+    
     
     public static void irAlLogin(HttpServletResponse response) throws IOException {
         

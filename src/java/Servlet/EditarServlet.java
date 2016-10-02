@@ -45,7 +45,7 @@ public class EditarServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion)){
+        if(Conexion.estaLogueado(sesion) && Conexion.tienePermiso(sesion, "editar_clientes")){
             
             try {
 
@@ -101,7 +101,7 @@ public class EditarServlet extends HttpServlet {
         
         HttpSession sesion = request.getSession();
             
-        if(Conexion.estaLogueado(sesion)){
+        if(Conexion.estaLogueado(sesion) && Conexion.tienePermiso(sesion, "editar_clientes")){
             
             try {
 
