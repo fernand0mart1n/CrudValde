@@ -40,9 +40,9 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`id`, `nombre`, `apellido`, `fecha_nac`, `nacionalidad_id`, `activo`) VALUES
-(26, 'sdadsadasd', 'asdsadsadasdsad', '2016-09-21', 4, 1);
-(26, 'Fernando', 'Valdebenito', '1992-04-07', 2, 1);
-(26, 'Barry', 'Allen', '1990-09-21', 2, 0);
+(1, 'sdadsadasd', 'asdsadsadasdsad', '2016-09-21', 4, 1),
+(2, 'Fernando', 'Valdebenito', '1992-04-07', 2, 1),
+(3, 'Barry', 'Allen', '1990-09-21', 2, 0);
 
 -- --------------------------------------------------------
 
